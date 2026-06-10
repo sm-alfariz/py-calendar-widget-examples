@@ -1,28 +1,30 @@
 import json
 from pathlib import Path
 import sys
-from PyQt6.QtWidgets import (QApplication,
-                             QMainWindow,
-                             QCalendarWidget,
-                             QWidget,
-                             QVBoxLayout,
-                             QListWidget,
-                             QLabel)
+from PyQt6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QCalendarWidget,
+    QWidget,
+    QVBoxLayout,
+    QListWidget,
+    QLabel,
+)
 from PyQt6.QtCore import QDate, QLocale
-from PyQt6.QtGui import (QColor,
-                         QBrush,
-                         QTextCharFormat,
-                         QFont
-                         )
+from PyQt6.QtGui import QColor, QBrush, QTextCharFormat, QFont
+
 
 class IndonesianCalendar(QWidget):
     """A custom calendar widget for displaying the Indonesian locale with holiday highlights."""
+
     def __init__(self, parent=None):
         super().__init__(parent)
-        
+
         # 1. Force the widget instance to use the Indonesian Locale memory footprint
         # This translates weekdays, month names, and headers automatically on Windows 10!
-        self.indonesian_locale = QLocale(QLocale.Language.Indonesian, QLocale.Country.Indonesia)
+        self.indonesian_locale = QLocale(
+            QLocale.Language.Indonesian, QLocale.Country.Indonesia
+        )
         self.setLocale(self.indonesian_locale)
 
         # 2. Initialize the calendar widget and holiday list container
@@ -51,12 +53,12 @@ class IndonesianCalendar(QWidget):
         """Load holidays from the tgl_merah.json file."""
         holidays = {}
         try:
-            file_path = Path(__file__).resolve().parent / 'tgl_merah.json'
-            with file_path.open('r', encoding='utf-8') as f:
+            file_path = Path(__file__).resolve().parent / "tgl_merah.json"
+            with file_path.open("r", encoding="utf-8") as f:
                 data = json.load(f)
             for item in data:
-                date_str = item.get('date')
-                name = item.get('name')
+                date_str = item.get("date")
+                name = item.get("name")
                 if date_str and name:
                     holidays[date_str] = name
         except Exception:
@@ -67,23 +69,23 @@ class IndonesianCalendar(QWidget):
     def highlight_holidays(self):
         """Applies explicit holiday highlights onto the Indonesian local calendar."""
         holiday_format = QTextCharFormat()
-        holiday_format.setBackground(QBrush(QColor("#FFCDD2"))) # Soft Red
-        holiday_format.setForeground(QBrush(QColor("#B71C1C"))) # Deep Red text
-        
+        holiday_format.setBackground(QBrush(QColor("#FFCDD2")))  # Soft Red
+        holiday_format.setForeground(QBrush(QColor("#B71C1C")))  # Deep Red text
+
         font = QFont()
         font.setBold(True)
         holiday_format.setFont(font)
-        
+
         for date_str, holiday_name in self.public_holidays.items():
             try:
                 year, month, day = map(int, date_str.split("-"))
                 holiday_date = QDate(year, month, day)
-                
+
                 holiday_format.setToolTip(holiday_name)
                 self.calendar_widget.setDateTextFormat(holiday_date, holiday_format)
             except ValueError:
                 continue
-        
+
         # Highlight today's date specifically with blue bold text.
         today_format = QTextCharFormat()
         today_format.setForeground(QBrush(QColor("#1E88E5")))  # Blue text
@@ -110,26 +112,27 @@ class IndonesianCalendar(QWidget):
                 entries.append((day, holiday_date, holiday_name))
 
         for _, holiday_date, holiday_name in entries:
-            display_date = self.indonesian_locale.toString(holiday_date, "dddd, dd MMMM yyyy")
+            display_date = self.indonesian_locale.toString(
+                holiday_date, "dddd, dd MMMM yyyy"
+            )
             self.holiday_list_widget.addItem(f"{display_date} — {holiday_name}")
 
         if not entries:
             self.holiday_list_widget.addItem("Tidak ada hari libur bulan ini.")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
-    
+
     # Optional: Force the entire App layout structure to look identical across OS platforms
-    app.setStyle("Fusion") 
-    
+    app.setStyle("Fusion")
+
     window = QMainWindow()
     window.setWindowTitle("Indonesian Native Calendar (PyQt6)")
     window.setGeometry(100, 100, 450, 380)
-    
+
     calendar = IndonesianCalendar(window)
     window.setCentralWidget(calendar)
-    
+
     window.show()
-    # Corrected modern execution method for PyQt6 environments
     sys.exit(app.exec())
