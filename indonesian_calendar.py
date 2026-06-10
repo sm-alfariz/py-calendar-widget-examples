@@ -83,6 +83,14 @@ class IndonesianCalendar(QWidget):
                 self.calendar_widget.setDateTextFormat(holiday_date, holiday_format)
             except ValueError:
                 continue
+        
+        # Highlight today's date specifically with blue bold text.
+        today_format = QTextCharFormat()
+        today_format.setForeground(QBrush(QColor("#1E88E5")))  # Blue text
+        today_font = QFont()
+        today_font.setBold(True)
+        today_format.setFont(today_font)
+        self.calendar_widget.setDateTextFormat(QDate.currentDate(), today_format)
 
     def update_holiday_list(self):
         """Populate the list of holidays for the currently shown month."""
