@@ -29,6 +29,10 @@ class IndonesianCalendar(QWidget):
 
         # 2. Initialize the calendar widget and holiday list container
         self.calendar_widget = QCalendarWidget(self)
+        # disable vertical header
+        self.calendar_widget.setVerticalHeaderFormat(
+            QCalendarWidget.VerticalHeaderFormat.NoVerticalHeader
+        )
         self.calendar_widget.setLocale(self.indonesian_locale)
         self.calendar_widget.currentPageChanged.connect(self.update_holiday_list)
 
