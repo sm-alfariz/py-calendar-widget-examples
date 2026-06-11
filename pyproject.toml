@@ -1,0 +1,52 @@
+[tool.pylint.main]
+# Analyse fallback blocks like 'except:' or 'else:'
+analyse-fallback-blocks = false
+# Use multiple processes to speed up Pylint execution
+jobs = 0
+
+[tool.pylint.format]
+# Maximum number of characters on a single line
+max-line-length = 88
+
+[tool.pylint."messages control"]
+# Disable specific linting rules that overlap with type checkers
+disable = [
+    "raw-checker-failed",
+    "bad-inline-option",
+    "locally-disabled",
+    "file-ignored",
+    "suppressed-message",
+    "useless-suppression",
+    "deprecated-pragma",
+    "use-symbolic-message-instead",
+    "missing-module-docstring",
+]
+
+[tool.pylint.design]
+# Maximum number of arguments allowed for a function or method
+max-args = 5
+
+
+[tool.pyright]
+# Path to the virtual environment directory containing your dependencies
+venvPath = "."
+venv = ".venv"
+
+# Files or directories that Pyright should examine
+include = ["src", "tests"]
+
+# Files or directories that Pyright should skip during analysis
+exclude = [
+    "**/node_modules",
+    "**/__pycache__",
+    "src/experimental"
+]
+
+# Strictness level: "off", "basic", or "strict"
+typeCheckingMode = "basic"
+
+# Individual rule overrides
+reportMissingImports = "error"
+reportMissingTypeStubs = "warning"
+reportUnusedVariable = "warning"
+reportUnknownMemberType = "none"

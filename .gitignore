@@ -1,2 +1,26 @@
-.venv/
+# Byte-compiled / optimized / DLL files
 __pycache__/
+*.py[cod]
+
+# Environments / Dependencies
+.env
+.venv
+env/
+venv/
+*.egg-info/
+
+# Distribution / Build
+build/
+dist/
+*.egg
+*.spec
+
+# IDEs / Editors
+.vscode/
+.idea/
+.ipynb_checkpoints
+
+# Logs / Test / Coverage
+*.log
+.pytest_cache/
+htmlcov/

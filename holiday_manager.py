@@ -2,6 +2,7 @@ from PyQt6.QtCore import QDate
 
 
 class HolidayManager:
+    """A simple manager for handling holiday data and retrieval."""
     def __init__(self):
         self.holidays = {
             QDate(2026, 1, 1): "Tahun Baru Masehi 2026",
